@@ -5,7 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .idea
-.uenf
+.bdmeptoxls
 *.so
 lib/
 *.egg-info/
