@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    BDMEPDownloader - Dashboard
+{% endblock %}
+{% include 'includes/nav.html' %}
+{% include 'includes/menu.html' %}
+{% block body %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+                <li class="active">Recomendações</li>
+            </ol>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            Ao Usuário destes dados, o INMET solicita:
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>
+                                1. Citar sempre a fonte dos dados, como: "Fonte: Dados da Rede do <a href="http://www.inmet.gov.br/">INMET</a>"
+                            </li>
+                            <li>
+                                2. Fornecer cópias dos trabalhos e/ou teses/dissertações realizadas, que utilizam os dados do INMET.
+                            </li>
+                            <li>
+                                3. Ao solicitar Esqueci minha senha, sua senha sera enviada para seu e-mail novamente.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-heading">
+                        <strong>Links</strong>
+                    </div>
+                    <div class="panel-body">
+                        <a href="http://www.inmet.gov.br/projetos/rede/pesquisa/">BDMEP - Banco de Dados Meteorológicos para Ensino e Pesquisa</a>
+                        <br>
+                        <a href="http://www.inmet.gov.br/">INMET - Instituto Nacional de Meteorologia</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extrajs %}
+    <script>
+        $(document).ready(function(){
+            $(".nav.menu li").removeClass("active");
+            $("li#recomendacao").addClass("active");
+        });
+    </script>
+{% endblock %}
