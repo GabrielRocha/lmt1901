@@ -1,3 +1,4 @@
+#! -*- coding: UTF-8 -*-
 
 ESTACOES = {
     "83049": 'AVELAR (P.DO ALFERES)',

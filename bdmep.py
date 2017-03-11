@@ -1,3 +1,4 @@
+#! -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
 from settings import LOGIN, URL_INDEX, ANCORA
 import requests

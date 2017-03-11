@@ -1,3 +1,4 @@
+#! -*- coding: UTF-8 -*-
 from flask import session, request, redirect, url_for
 from bdmep import BDMEP
 from estacoes import ESTACOES

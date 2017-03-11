@@ -1,3 +1,4 @@
+#! -*- coding: UTF-8 -*-
 from flask import Flask, send_file, render_template, request, session, redirect, url_for
 from estacoes import ESTACOES
 from helper import download
