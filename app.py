@@ -41,6 +41,7 @@ def dashboard():
     context = dict(estacoes=sorted(ESTACOES.items()))
     return render_template("index.html", **context)
 
+
 @app.route("/download/horarios", methods=['POST'])
 def download_horarios():
     _file, file_name = download("URL_DADOS_HORARIOS")
@@ -69,6 +70,7 @@ def recomendacao():
         return redirect(url_for('login'))
     return render_template("recomendacao.html")
 
+
 @app.errorhandler(400)
 @app.errorhandler(404)
 @app.errorhandler(405)
@@ -79,6 +81,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_not_found(e):
     return render_template('status_code/500.html'), 500
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
