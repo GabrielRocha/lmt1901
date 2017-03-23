@@ -27,9 +27,10 @@ class BDMEP():
         query = query.format(estacao=estacao, data_inicio=data_inicio, data_fim=data_fim)
         html = BeautifulSoup(self.session.get(url=query).text, "html.parser")
         tag_pre_html = html.find("pre").text
-        index_ancora = tag_pre_html.find(ANCORA)
-        if index_ancora:
-            return tag_pre_html[index_ancora:].replace(".", ",").split("\n")
+        if tag_pre_html:
+            index_ancora = tag_pre_html.find(ANCORA)
+            if index_ancora > 0:
+                return tag_pre_html[index_ancora:].replace(".", ",").split("\n")
         raise ValueError("Dados Não encontrados")
 
     def generate_xls(self, estacao, data_inicio, data_fim, query):
