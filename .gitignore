@@ -10,4 +10,5 @@ __pycache__/
 lib/
 *.egg-info/
 .lmt1901
+.cache
 
