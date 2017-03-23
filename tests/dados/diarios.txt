@@ -1,0 +1,4 @@
+
+Estacao;Data;Hora;Precipitacao;TempMaxima;TempMinima;Insolacao;Evaporacao Piche;Temp Comp Media;Umidade Relativa Media;Velocidade do Vento Media;
+83695;01/01/2016;0000;;38,2;;10,5;5,2;30;61,75;0,666667;
+83695;01/01/2016;1200;0;;24,8;;;;;;

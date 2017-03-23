@@ -1,0 +1,5 @@
+
+Estacao;Data;Hora;TempBulboSeco;TempBulboUmido;UmidadeRelativa;PressaoAtmEstacao;DirecaoVento;VelocidadeVentoNebulosidade;
+83695;01/01/2016;0000;30,4;25,8;67;996,5;0;0;0;
+83695;01/01/2016;1200;31;25,8;63;997;0;0;4;
+83695;01/01/2016;1800;38;28,4;46;993,8;0;0;2;
