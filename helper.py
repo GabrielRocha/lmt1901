@@ -7,7 +7,7 @@ import settings
 
 def download(query):
     if 'username' and 'password' not in session.keys():
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     bdmep = BDMEP(session['username'], session['password'])
     temp = bdmep.generate_xls(request.form['estacao'],
                               request.form['data_inicio'],

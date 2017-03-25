@@ -21,7 +21,7 @@ class TestCaseApp(TestCase):
 
     def test_template_index(self):
         self.client.get("/")
-        self.assert_template_used('login.html')
+        self.assert_template_used('index.html')
 
     def test_post_access_index(self):
         data = {"username": "user",
@@ -33,27 +33,24 @@ class TestCaseApp(TestCase):
         data = {"username": "user",
                 "password": "pass"}
         self.client.post("/", data=data, follow_redirects=True)
-        self.assert_template_used('index.html')
+        self.assert_template_used('bdmeptoxls.html')
 
     def test_template_logout(self):
         self.client.get("/logout", follow_redirects=True)
-        self.assert_template_used('login.html')
+        self.assert_template_used('index.html')
 
     def test_dashboard_without_login(self):
-        response = self.client.get("/dashboard")
+        response = self.client.get("/bdmeptoxls")
         assert response.status_code == 302
 
     def test_dashboard_without_login_redirect_to_login(self):
-        self.client.get("/dashboard", follow_redirects=True)
-        self.assert_template_used('login.html')
+        self.client.get("/bdmeptoxls", follow_redirects=True)
+        self.assert_template_used('index.html')
 
-    def test_recomendacao_without_login(self):
+    def test_recomendacao(self):
         response = self.client.get("/recomendacao")
-        assert response.status_code == 302
-
-    def test_recomendacao_without_login_redirect_to_login(self):
-        self.client.get("/recomendacao", follow_redirects=True)
-        self.assert_template_used('login.html')
+        assert response.status_code == 200
+        self.assert_template_used('recomendacao.html')
 
     def test_download_mensal(self):
         data = {"username": "user",
@@ -73,7 +70,7 @@ class TestCaseApp(TestCase):
         response = self.client.post("/download/mensal", data=data)
         assert response.status_code == 302
         self.client.post("/download/mensal", data=data, follow_redirects=True)
-        self.assert_template_used('login.html')
+        self.assert_template_used('index.html')
 
     def test_download_diarios(self):
         data = {"username": "user",
@@ -93,7 +90,7 @@ class TestCaseApp(TestCase):
         response = self.client.post("/download/diarios", data=data)
         assert response.status_code == 302
         self.client.post("/download/diarios", data=data, follow_redirects=True)
-        self.assert_template_used('login.html')
+        self.assert_template_used('index.html')
 
     def test_download_horarios(self):
         data = {"username": "user",
@@ -113,7 +110,7 @@ class TestCaseApp(TestCase):
         response = self.client.post("/download/horarios", data=data)
         assert response.status_code == 302
         self.client.post("/download/diarios", data=data, follow_redirects=True)
-        self.assert_template_used('login.html')
+        self.assert_template_used('index.html')
 
     def test_error_404(self):
         self.client.get("/asfdasd")

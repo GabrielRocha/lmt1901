@@ -11,7 +11,7 @@ app.secret_key = settings.SECRET_KEY
 
 
 @app.route("/", methods=['POST', 'GET'])
-def login():
+def index():
     get_validate = request.method == "GET" and 'username' and 'password' in session
     context = dict()
     if request.method == "POST":
@@ -20,26 +20,26 @@ def login():
         else:
             session['username'] = request.form['username']
             session['password'] = request.form['password']
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("bdmeptoxls"))
     if get_validate:
-        return redirect("dashboard")
+        return redirect("bdmeptoxls")
     session.clear()
-    return render_template("login.html", **context)
+    return render_template("index.html", **context)
 
 
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 
-@app.route("/dashboard")
-def dashboard():
+@app.route("/bdmeptoxls")
+def bdmeptoxls():
     get_validate = request.method == "GET" and 'username' and 'password' not in session.keys()
     if get_validate:
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     context = dict(estacoes=sorted(ESTACOES.items()))
-    return render_template("index.html", **context)
+    return render_template("bdmeptoxls.html", **context)
 
 
 @app.route("/download/horarios", methods=['POST'])
@@ -59,9 +59,6 @@ def download_mensal():
 
 @app.route("/recomendacao", methods=['GET'])
 def recomendacao():
-    get_validate = request.method == "GET" and 'username' and 'password' not in session.keys()
-    if get_validate:
-        return redirect(url_for('login'))
     return render_template("recomendacao.html")
 
 
@@ -79,4 +76,4 @@ def page_error(e):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
