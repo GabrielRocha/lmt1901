@@ -18,7 +18,7 @@ class TestCaseApp(TestCase):
     def test_index_without_username_and_password(self):
         response = self.client.post("/", data=dict(username="", password=""))
         self.assertEqual(response.status_code, 200)
-        self.assert_context('error', 'Usuário e Senha são obrigatórios')
+        self.assert_context('error', 'Usuário e Senha são obrigatórios'.decode("utf-8"))
 
     def test_template_index(self):
         self.client.get("/")

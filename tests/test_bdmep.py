@@ -1,5 +1,5 @@
 #! -*- coding: UTF-8 -*-
-from itertools import zip_longest
+from itertools import izip_longest
 from bdmep import BDMEP, LOGIN
 from unittest import TestCase
 import settings
@@ -67,5 +67,5 @@ class TestBDMEP(TestCase):
         for rownum in range(max(sheet1.nrows, sheet2.nrows)):
             row_rb1 = sheet1.row_values(rownum)
             row_rb2 = sheet2.row_values(rownum)
-            for colnum, (c1, c2) in enumerate(zip_longest(row_rb1, row_rb2)):
+            for colnum, (c1, c2) in enumerate(izip_longest(row_rb1, row_rb2)):
                 assert c1 == c2
