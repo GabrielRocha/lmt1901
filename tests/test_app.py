@@ -1,3 +1,4 @@
+#! -*- coding: UTF-8 -*-
 # https://pytest-flask.readthedocs.io/en/latest/features.html
 from app import app
 from flask.ext.testing import TestCase
