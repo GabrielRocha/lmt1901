@@ -1,7 +1,7 @@
 from estacoes import ESTACOES
 
 
-class TestEstacoes():
+class TestCaseEstacoes():
     def test_total_ESTACOES(self):
         assert len(ESTACOES.keys()) == 6
 

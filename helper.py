@@ -1,5 +1,5 @@
 #! -*- coding: UTF-8 -*-
-from flask import session, request, redirect, url_for
+from flask import session, request, redirect, url_for, send_file
 from bdmep import BDMEP
 from estacoes import ESTACOES
 import settings
@@ -17,4 +17,5 @@ def download(query):
                                          request.form['data_inicio'].replace("/", ""),
                                          request.form['data_fim'].replace("/", ""),
                                          query.replace("URL_DADOS_", ""))
-    return temp, file_name
+    return send_file(temp.filename, as_attachment=True,
+                     attachment_filename=file_name)

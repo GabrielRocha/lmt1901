@@ -3,3 +3,5 @@ requests
 xlsxwriter
 flask
 pytest
+flask-testing
+blinker

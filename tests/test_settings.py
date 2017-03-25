@@ -2,7 +2,7 @@
 import settings
 
 
-class TestSettings():
+class TestCaseSettings():
 
     def test_mCod_key_in_LOGIN(self):
         assert "mCod" in settings.LOGIN.keys()

@@ -1,5 +1,5 @@
 #! -*- coding: UTF-8 -*-
-from flask import Flask, send_file, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for
 from estacoes import ESTACOES
 from helper import download
 import settings
@@ -12,7 +12,7 @@ app.secret_key = settings.SECRET_KEY
 
 @app.route("/", methods=['POST', 'GET'])
 def login():
-    get_validate = request.method == "GET" and 'username' and 'password' in session.keys()
+    get_validate = request.method == "GET" and 'username' and 'password' in session
     context = dict()
     if request.method == "POST":
         if not(request.form['username'] and request.form['password']):
@@ -44,23 +44,17 @@ def dashboard():
 
 @app.route("/download/horarios", methods=['POST'])
 def download_horarios():
-    _file, file_name = download("URL_DADOS_HORARIOS")
-    return send_file(_file.filename, as_attachment=True,
-                     attachment_filename=file_name)
+    return download("URL_DADOS_HORARIOS")
 
 
 @app.route("/download/diarios", methods=['POST'])
 def download_diarios():
-    _file, file_name = download("URL_DADOS_DIARIOS")
-    return send_file(_file.filename, as_attachment=True,
-                     attachment_filename=file_name)
+    return download("URL_DADOS_DIARIOS")
 
 
 @app.route("/download/mensal", methods=['POST'])
 def download_mensal():
-    _file, file_name = download("URL_DADOS_MENSAIS")
-    return send_file(_file.filename, as_attachment=True,
-                     attachment_filename=file_name)
+    return download("URL_DADOS_MENSAIS")
 
 
 @app.route("/recomendacao", methods=['GET'])
@@ -79,7 +73,7 @@ def page_not_found(e):
 
 
 @app.errorhandler(500)
-def page_not_found(e):
+def page_error(e):
     return render_template('status_code/500.html'), 500
 
 

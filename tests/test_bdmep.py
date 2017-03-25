@@ -1,10 +1,7 @@
 #! -*- coding: UTF-8 -*-
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from itertools import zip_longest
 from bdmep import BDMEP, LOGIN
-from unittest import TestCase, main
+from unittest import TestCase
 import settings
 import pytest
 import os
@@ -12,6 +9,7 @@ import xlrd
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 class TestBDMEP(TestCase):
     
@@ -71,6 +69,3 @@ class TestBDMEP(TestCase):
             row_rb2 = sheet2.row_values(rownum)
             for colnum, (c1, c2) in enumerate(zip_longest(row_rb1, row_rb2)):
                 assert c1 == c2
-
-if __name__ == '__main__':
-    main()
