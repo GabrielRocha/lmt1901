@@ -16,7 +16,7 @@ def index():
     context = dict()
     if request.method == "POST":
         if not(request.form['username'] and request.form['password']):
-            context['error'] = "Usuário e Senha são obrigatórios"
+            context['error'] = "Usuário e Senha são obrigatórios".decode('utf-8')
         else:
             session['username'] = request.form['username']
             session['password'] = request.form['password']
@@ -76,4 +76,4 @@ def page_error(e):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=False)
