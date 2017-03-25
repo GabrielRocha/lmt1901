@@ -9,7 +9,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
         <div class="row">
             <ol class="breadcrumb">
-                <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+                <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
                 <li class="active">BDMEPtoXLS</li>
             </ol>
         </div>
@@ -48,31 +48,5 @@
 	</div>
         </div>
     </div>	<!--/.main-->
-{% endblock %}
-{% block extrajs %}
-    <script>
-        $(document).ready(function(){
-            $(".submit").click(function(){
-                if ($("input[name=estacao]:checked").size() <= 0){
-                    $("#error").children().remove();
-                    $("#error").append("<br><small><font color=red>Este Campo é Obrigatório</font></small>");
-                }else{
-                    action = $(this).attr("action");
-                    $("form").attr("action", action);
-                    $("form").submit();
-                }
-            });
-            $("input[name=estacao]").click(function(){
-                $("#error").children().remove();
-            });
-            $('#periodo .input-daterange').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-                format: "dd/mm/yyyy",
-                language: "pt-BR"
-            });
-        });
-    </script>
 {% endblock %}
 

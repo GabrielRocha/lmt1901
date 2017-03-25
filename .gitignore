@@ -11,4 +11,5 @@ lib/
 *.egg-info/
 .lmt1901
 .cache
+.python-version
 
