@@ -58,14 +58,14 @@
                 if ($(this).val() == ""){
                     $("#input_fahrenheit").val(0);
                 }else{
-                    $("#input_fahrenheit").val(parseInt($(this).val())*1.8+32);
+                    $("#input_fahrenheit").val(parseFloat($(this).val()*1.8+32).toFixed(2));
                 }
             });
             $("#input_fahrenheit").keyup(function(){
                 if ($(this).val() == ""){
                     $("#input_celsius").val(0);
                 }else{
-                    $("#input_celsius").val(parseInt(($(this).val()-32)/1.8));
+                    $("#input_celsius").val(parseFloat(($(this).val()-32)/1.8).toFixed(2));
                 }
             });
         });
