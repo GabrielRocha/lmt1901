@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    LMT1901 - Celsius To Fahrenheit
+{% endblock %}
+{% include 'includes/nav.html' %}
+{% include 'includes/menu.html' %}
+{% block body %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                <li class="active">Celsius To Fahrenheit</li>
+            </ol>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-11 col-lg-offset-1" id="convert">
+                <div class="col-md-4 col-sm-3 col-xs-6" id="celsius">
+                    <div class="dashboard-div-wrapper bk-clr-one">
+                        <i class="fa fa-thermometer-full dashboard-div-icon"></i>
+                        <div class="form-group">
+                            <label class="font-noraml">Celsius</label>
+                            <input type="text" id="input_celsius" class="input-sm form-control" value="0" style="text-align:center;"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2" style="margin-top:6%; margin-left: 6%" id="div_change">
+                    <button class="btn" id="change"><i class="fa fa-exchange fa-4x" aria-hidden="true"></i></button>
+                </div>
+                <div class="col-md-4 col-sm-3 col-xs-6" id="fahrenheit">
+                    <div class="dashboard-div-wrapper bk-clr-two">
+                        <i class="fa fa-thermometer-full dashboard-div-icon"></i>
+                        <div class="form-group">
+                            <label class="font-noraml">Fahrenheit</label>
+                            <br/>
+                            <input type="text" readonly="true" id="input_fahrenheit" class="input-sm form-control" value="0" style="text-align:center;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>	<!--/.main-->
+{% endblock %}
+{% block extrajs %}
+    <script>
+        $(document).ready(function(){
+            $(".nav.menu li").removeClass("active");
+            $("li#celsius_to_fahrenheit").addClass("active");
+            $("#change").click(function(){
+                var list = $('#convert');
+                var listItems = list.children();
+                list.append(listItems.get().reverse());
+                $(list.children()[0]).find("input").attr("readonly", false);
+                $(list.children()[2]).find("input").attr("readonly", true);
+            });
+            $("#input_celsius").keyup(function(){
+                if ($(this).val() == ""){
+                    $("#input_fahrenheit").val(0);
+                }else{
+                    $("#input_fahrenheit").val(parseInt($(this).val())*1.8+32);
+                }
+            });
+            $("#input_fahrenheit").keyup(function(){
+                if ($(this).val() == ""){
+                    $("#input_celsius").val(0);
+                }else{
+                    $("#input_celsius").val(parseInt(($(this).val()-32)/1.8));
+                }
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -62,6 +62,11 @@ def recomendacao():
     return render_template("recomendacao.html")
 
 
+@app.route("/celsius_to_fahrenheit")
+def celsius_to_fahrenheit():
+    return render_template("celsius_to_fahrenheit.html")
+
+
 @app.errorhandler(400)
 @app.errorhandler(404)
 @app.errorhandler(405)
