@@ -1,21 +1,25 @@
 #! -*- coding: UTF-8 -*-
-from flask import session, request, redirect, url_for, send_file
-from bdmep import BDMEP
-from estacoes import ESTACOES
-import settings
+import tempfile
+import xlsxwriter
+from unicodedata import normalize
 
 
-def download(query):
-    if 'username' and 'password' not in session.keys():
-        return redirect(url_for('index'))
-    bdmep = BDMEP(session['username'], session['password'])
-    temp = bdmep.generate_xls(request.form['estacao'],
-                              request.form['data_inicio'],
-                              request.form['data_fim'],
-                              settings.__getattribute__(query))
-    file_name = "{}_{}_{}_{}.xls".format(ESTACOES.get(request.form['estacao'], "").replace(" ","_"),
-                                         request.form['data_inicio'].replace("/", ""),
-                                         request.form['data_fim'].replace("/", ""),
-                                         query.replace("URL_DADOS_", ""))
-    return send_file(temp.filename, as_attachment=True,
-                     attachment_filename=file_name)
+def remover_acentos(txt, codif='utf-8'):
+    return normalize('NFKD', txt.decode(codif)).encode('ASCII','ignore')
+
+
+def build_xls(dados):
+    handle, filepath = tempfile.mkstemp()
+    workbook = xlsxwriter.Workbook(filepath)
+    worksheet = workbook.add_worksheet()
+    for row_number, row_value in enumerate(dados):
+        try:
+            columns = row_value.split(";")
+        except:
+            columns = [column for column in row_value]
+        for column_number, column_value in enumerate(columns):
+            worksheet.write(row_number, column_number, column_value)
+    workbook.close()
+    return workbook
+
+

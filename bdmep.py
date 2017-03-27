@@ -1,9 +1,8 @@
 #! -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
 from settings import LOGIN, URL_INDEX, ANCORA
+from helper import build_xls
 import requests
-import xlsxwriter
-import tempfile
 
 
 class BDMEP():
@@ -33,14 +32,7 @@ class BDMEP():
                 return tag_pre_html[index_ancora:].replace(".", ",").split("\n")
         raise ValueError("Dados Não encontrados")
 
-    def generate_xls(self, estacao, data_inicio, data_fim, query):
+    def get_xls(self, estacao, data_inicio, data_fim, query):
         dados = self.get_dados(estacao, data_inicio, data_fim, query)
-        handle, filepath = tempfile.mkstemp()
-        workbook = xlsxwriter.Workbook(filepath)
-        worksheet = workbook.add_worksheet()
-        for row_number, row_value in enumerate(dados):
-            columns = row_value.split(";")
-            for column_number, column_value in enumerate(columns):
-                worksheet.write(row_number, column_number, column_value)
-        workbook.close()
-        return workbook
+        return build_xls(dados)
+

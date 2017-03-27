@@ -49,15 +49,15 @@ class TestBDMEP(TestCase):
                open(BASE_DIR+"/dados/mensais.txt").read().split("\n")
 
     def test_generate_xls_horarios(self):
-        xls = self.dados.generate_xls("83695","01/01/2016","01/01/2016", settings.URL_DADOS_HORARIOS)
+        xls = self.dados.get_xls("83695","01/01/2016","01/01/2016", settings.URL_DADOS_HORARIOS)
         self._compare_xls(xls.filename, BASE_DIR+"/dados/horarios.xls")
 
     def test_generate_xls_diarios(self):
-        xls = self.dados.generate_xls("83695","01/01/2016","01/01/2016", settings.URL_DADOS_DIARIOS)
+        xls = self.dados.get_xls("83695","01/01/2016","01/01/2016", settings.URL_DADOS_DIARIOS)
         self._compare_xls(xls.filename, BASE_DIR+"/dados/diarios.xls")
 
     def test_generate_xls_mensais(self):
-        xls = self.dados.generate_xls("83695","01/01/2016","01/02/2016", settings.URL_DADOS_MENSAIS)
+        xls = self.dados.get_xls("83695","01/01/2016","01/02/2016", settings.URL_DADOS_MENSAIS)
         self._compare_xls(xls.filename, BASE_DIR+"/dados/mensais.xls")
 
     def _compare_xls(self, xls, xls_base):

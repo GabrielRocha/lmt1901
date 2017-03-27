@@ -1,7 +1,7 @@
 #! -*- coding: UTF-8 -*-
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_file
 from estacoes import ESTACOES
-from helper import download
+from bdmep import BDMEP
 import settings
 import os
 
@@ -44,17 +44,17 @@ def bdmeptoxls():
 
 @app.route("/download/horarios", methods=['POST'])
 def download_horarios():
-    return download("URL_DADOS_HORARIOS")
+    return download_dados_query("URL_DADOS_HORARIOS")
 
 
 @app.route("/download/diarios", methods=['POST'])
 def download_diarios():
-    return download("URL_DADOS_DIARIOS")
+    return download_dados_query("URL_DADOS_DIARIOS")
 
 
 @app.route("/download/mensal", methods=['POST'])
 def download_mensal():
-    return download("URL_DADOS_MENSAIS")
+    return download_dados_query("URL_DADOS_MENSAIS")
 
 
 @app.route("/recomendacao", methods=['GET'])
@@ -77,6 +77,22 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_error(e):
     return render_template('status_code/500.html'), 500
+
+
+def download_dados_query(query):
+    if 'username' and 'password' not in session.keys():
+        return redirect(url_for('index'))
+    bdmep = BDMEP(session['username'], session['password'])
+    temp = bdmep.get_xls(request.form['estacao'],
+                              request.form['data_inicio'],
+                              request.form['data_fim'],
+                              settings.__getattribute__(query))
+    file_name = "{}_{}_{}_{}.xls".format(ESTACOES.get(request.form['estacao'], "").replace(" ","_"),
+                                         request.form['data_inicio'].replace("/", ""),
+                                         request.form['data_fim'].replace("/", ""),
+                                         query.replace("URL_DADOS_", ""))
+    return send_file(temp.filename, as_attachment=True,
+                     attachment_filename=file_name)
 
 
 if __name__ == "__main__":
