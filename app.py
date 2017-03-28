@@ -1,7 +1,9 @@
 #! -*- coding: UTF-8 -*-
 from flask import Flask, render_template, request, session, redirect, url_for, send_file
+from datetime import date
 from estacoes import ESTACOES
 from bdmep import BDMEP
+from cptec import CPTECCrawler
 import settings
 import os
 
@@ -65,6 +67,22 @@ def recomendacao():
 @app.route("/celsius_to_fahrenheit")
 def celsius_to_fahrenheit():
     return render_template("celsius_to_fahrenheit.html")
+
+
+@app.route("/cptec", methods=['GET', 'POST'])
+def cptec():
+    if request.method == "POST":
+        try:
+            cidade = request.form['cidade']
+            cptec = CPTECCrawler(cidade)
+            tmp = cptec.get_xls()
+            file_name = "CPTEC_{}_{}.xls".format(cidade.replace(" ", "_"), date.today().strftime("%d_%m_%Y"))
+            return send_file(tmp.filename, as_attachment=True,
+                         attachment_filename=file_name)
+        except:
+            context=dict(error="Cidade Não Encontrada".decode("utf-8"))
+            return render_template("cptec.html", **context)
+    return render_template("cptec.html")
 
 
 @app.errorhandler(400)

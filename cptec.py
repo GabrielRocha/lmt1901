@@ -19,8 +19,10 @@ class CPTECCrawler:
         for div in divs.split():
             text_div = content.find("div", {"class": div})
             if text_div.find("b"):
-                value = re.sub("(\\r|\\n|  )", "", text_div.find("b").text)
-                key = remover_acentos(re.sub("(\\r|\\n|  |\*)", "", text_div.text.replace(value, "")).encode('utf-8'))
+                value = re.sub("(\\r|\\n|  )", "", " ".join(text_div.find("b").strings))
+                key = remover_acentos(re.sub("(\\r|\\n|  |\*)", "",
+                                             text_div.text.replace(text_div.find("b").text,
+                                                                   "")).encode('utf-8'))
             else:
                 key = "None"
                 value = text_div.text
@@ -33,23 +35,29 @@ class CPTECCrawler:
 
     @property
     def condicoes_atuais(self):
-        condicao_atual = self.root_content.find("div", {"class":"cond"})
-        dados = self._get_elements(condicao_atual, (2,7))
-        dados += [('CONDICAO', self._get_elements(condicao_atual, (7,8))[0][-1])]
-        iuv_max = self.root_content.find("div", {"class": "induv"})
-        dados += [('IUV MAXIMO', "%s - %s" %(self._get_uv_max(iuv_max), " ".join(iuv_max.strings)))]
-        return [dados]
+        try:
+            condicao_atual = self.root_content.find("div", {"class":"cond"})
+            dados = self._get_elements(condicao_atual, (2,7))
+            dados += [('CONDICAO', self._get_elements(condicao_atual, (7,8))[0][-1])]
+            iuv_max = self.root_content.find("div", {"class": "induv"})
+            dados += [('IUV MAXIMO', "%s - %s" %(self._get_uv_max(iuv_max), " ".join(iuv_max.strings)))]
+            return [dados]
+        except:
+            raise ValueError("Dados Não encontrados")
 
     @property
     def previsoes(self):
-        dados = list()
-        previsoes = self.root_content.find_all("div", {"class":"previsao"})
-        for previsao in previsoes:
-            dados.append([("DATA", previsao.find("div", {"class": "tit"}).text.strip())])
-            dados[-1] += self._get_elements(previsao, (2,7))
-            dados[-1] += [('CONDICAO', self._get_elements(previsao, (8,9))[0][-1])]
-            dados[-1] += [('IUV MAXIMO', self._get_uv_max(previsao.find("div", {"class": "c7"})))]
-        return dados
+        try:
+            dados = list()
+            previsoes = self.root_content.find_all("div", {"class":"previsao"})
+            for previsao in previsoes:
+                dados.append([("DATA", previsao.find("div", {"class": "tit"}).text.strip())])
+                dados[-1] += self._get_elements(previsao, (2,7))
+                dados[-1] += [('CONDICAO', self._get_elements(previsao, (8,9))[0][-1])]
+                dados[-1] += [('IUV MAXIMO', self._get_uv_max(previsao.find("div", {"class": "c7"})))]
+            return dados
+        except:
+                raise ValueError("Dados Não encontrados")
 
     def _to_list(self, group):
         header = [key for key, _ in group[0]]
@@ -64,3 +72,7 @@ class CPTECCrawler:
 
     def get_xls(self):
         return build_xls(self.condicoes_atuais_list()+[[]]+self.previsoes_list())
+
+if __name__ == '__main__':
+    cp = CPTECCrawler("asdf")
+    cp.condicoes_atuais_list()

@@ -841,6 +841,10 @@ h1.page-header {
 .bk-clr-two {
     background-color: #1ebfae;
 }
+.bk-clr-three{
+    background-color: #696969;
+}
+
 .dashboard-div-icon {
     border: 2px solid #fff;
     border-radius: 50%;
@@ -853,4 +857,8 @@ h1.page-header {
 }
 .submit{
     cursor: pointer;
+}
+
+.btn-lmt{
+	background-color: #2e8b57;
 }
