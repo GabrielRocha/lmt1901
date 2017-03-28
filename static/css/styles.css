@@ -6,6 +6,12 @@ Version 1.0
 
 /*Global Styles*/
 
+
+#div_change{
+    margin-top: 6%;
+    margin-left: 6%
+}
+
 body {
 	background: #f1f4f7;
 	padding-top: 50px;
@@ -864,10 +870,4 @@ h1.page-header {
 
 .btn-lmt{
 	background-color: #2e8b57;
-}
-
-#div_change{
-    margin-bottom: 6%;
-    margin-top: 6%;
-    margin-left: 6%
 }
