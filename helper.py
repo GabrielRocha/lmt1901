@@ -1,11 +1,16 @@
 #! -*- coding: UTF-8 -*-
+from unicodedata import normalize
 import tempfile
 import xlsxwriter
-from unicodedata import normalize
+import re
 
 
 def remover_acentos(txt, codif='utf-8'):
     return normalize('NFKD', txt.decode(codif)).encode('ASCII','ignore')
+
+def normalize_string(string):
+    return re.sub("(\\r|\\n|  |\*)", "", string)
+
 
 
 def build_xls(dados):

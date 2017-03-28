@@ -1,16 +1,19 @@
 #! -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
-from helper import build_xls, remover_acentos
+from helper import build_xls, remover_acentos, normalize_string
 import requests
 import re
 
 
 class CPTECCrawler:
 
-    def __init__(self, cidade):
-        self.cidade = cidade
+    def __init__(self, cidade=None, url=None):
         session = requests.Session()
-        self.html_cptec = session.post("http://www.cptec.inpe.br/cidades/previsao.do",data=dict(parameter="listar2",name=self.cidade)).text
+        if not url:
+            self.html_cptec = session.post("http://www.cptec.inpe.br/cidades/previsao.do",
+                                           data=dict(parameter="listar2", name=cidade)).text
+        else:
+            self.html_cptec = session.get("http://www.cptec.inpe.br/{}".format(url)).text
         self.parsed_html = BeautifulSoup(self.html_cptec, "html.parser")
         self.root_content = self.parsed_html.find("div", {"class": "meio_esquerda"})
 
@@ -20,10 +23,9 @@ class CPTECCrawler:
         for div in divs.split():
             text_div = content.find("div", {"class": div})
             if text_div and text_div.find("b"):
-                value = re.sub("(\\r|\\n|  )", "", " ".join(text_div.find("b").strings))
-                key = remover_acentos(re.sub("(\\r|\\n|  |\*)", "",
-                                             text_div.text.replace(text_div.find("b").text,
-                                                                   "")).encode('utf-8'))
+                value = normalize_string(" ".join(text_div.find("b").strings))
+                key = remover_acentos(normalize_string(text_div.text.replace(text_div.find("b").text,""))
+                                      .encode('utf-8'))
             else:
                 key = "None"
                 value = text_div.text
@@ -39,7 +41,6 @@ class CPTECCrawler:
         try:
             condicao_atual = self.root_content.find("div", {"class":"cond"})
             if not condicao_atual:
-                condicao_atual = self.root_content.find("div", {"class":"conduv"})
                 iuv_max = self.root_content.find("div", {"class": "dados"})
                 dados = [('IUV MAXIMO', "%s - %s" %(self._get_uv_max(iuv_max), " ".join(iuv_max.strings)))]
             else:
@@ -63,7 +64,18 @@ class CPTECCrawler:
                 dados[-1] += [('IUV MAXIMO', self._get_uv_max(previsao.find("div", {"class": "c7"})))]
             return dados
         except:
-                raise ValueError("Dados Não encontrados")
+            raise ValueError("Dados Não encontrados")
+
+    def show_cidades_validas(self):
+        try:
+            cidades = self.parsed_html.find("div", {"class": "cont_inferior"}).find_all("li")
+            dict_cidades = list()
+            for cidade in cidades:
+                sugestao = cidade.find("a")
+                dict_cidades.append([normalize_string(sugestao.text), normalize_string(sugestao.attrs['href'])])
+            return dict(cidades=dict_cidades)
+        except:
+            return dict(error="Nenhuma cidade foi encontrada. Tente novamente!")
 
     def _to_list(self, group):
         header = [key for key, _ in group[0]]

@@ -17,10 +17,10 @@
         <form action="" method="POST">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-md-3 col-sm-3 col-xs-12 col-lg-offset-4">
+                    <div class="col-md-4 col-sm-4 col-xs-12 col-lg-offset-4">
                         <div class="dashboard-div-wrapper bk-clr-three">
                             <i class="fa fa-database dashboard-div-icon"></i>
-                            <div class="form-group" id="periodo">
+                            <div class="form-group">
                                 {% if error %}
                                     <div class="alert bg-danger" role="alert">
                                         <i class="fa fa-close"></i>
@@ -29,10 +29,17 @@
                                 {% endif %}
                                 <label class="font-noraml">CIDADE</label>
                                 <br/>
-                                <small>Pelo menos 3 letras</small>
-                                <input type="text" pattern=".{2,}"   required title="No mínimo 3 letras" class="input-sm form-control" name="cidade" value=""/>
+                                {%  if cidades %}
+                                    {% for cidade, url in cidades %}
+                                        <input type="radio" class="cidade_sugestao" name="url" value="{{ url }}" cidade="{{ cidade }}">{{ cidade }}
+                                    {% endfor %}
+                                {% endif %}
+                                <div id="input_cidade">
+                                    <small>Pelo menos 3 letras</small>
+                                    <input type="text" pattern=".{2,}" required title="No mínimo 3 letras" id="cidade" class="input-sm form-control" name="cidade" value=""/>
+                                </div>
                                 <br/>
-                                <input type="submit" class="btn btn-lmt" name="cidade" value="Enviar"/>
+                                <input type="submit" class="btn btn-lmt" value="Enviar"/>
                             </div>
                         </div>
                     </div>
@@ -46,6 +53,12 @@
         $(document).ready(function(){
             $(".nav.menu li").removeClass("active");
             $("li#cptec").addClass("active");
+            if ($("input[type=radio]").length > 0){
+                $("#input_cidade").hide();
+            }
+            $(".cidade_sugestao").click(function(){
+               $("#cidade").val($(this).attr("cidade"));
+            });
         });
     </script>
 {% endblock %}

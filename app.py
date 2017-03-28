@@ -4,6 +4,7 @@ from datetime import date
 from estacoes import ESTACOES
 from bdmep import BDMEP
 from cptec import CPTECCrawler
+from helper import remover_acentos
 import settings
 import os
 
@@ -72,15 +73,18 @@ def celsius_to_fahrenheit():
 @app.route("/cptec", methods=['GET', 'POST'])
 def cptec():
     if request.method == "POST":
-        try:
-            cidade = request.form['cidade']
+        cidade = remover_acentos(request.form['cidade'].encode("utf-8"))
+        if request.form.get('url', None):
+            cptec = CPTECCrawler(url=request.form.get('url'))
+        else:
             cptec = CPTECCrawler(cidade)
+        try:
             tmp = cptec.get_xls()
-            file_name = "CPTEC_{}_{}.xls".format(cidade.replace("+", "_"), date.today().strftime("%d_%m_%Y"))
+            file_name = "CPTEC_{}_{}.xls".format(cidade.replace(" ", "_"), date.today().strftime("%d_%m_%Y"))
             return send_file(tmp.filename, as_attachment=True,
                          attachment_filename=file_name)
         except:
-            context=dict(error="Cidade Não Encontrada".decode("utf-8"))
+            context = cptec.show_cidades_validas()
             return render_template("cptec.html", **context)
     return render_template("cptec.html")
 
@@ -115,4 +119,4 @@ def download_dados_query(query):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=True)
