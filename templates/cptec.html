@@ -30,9 +30,13 @@
                                 <label class="font-noraml">CIDADE</label>
                                 <br/>
                                 {%  if cidades %}
+                                    <ul>
                                     {% for cidade, url in cidades %}
-                                        <input type="radio" class="cidade_sugestao" name="url" value="{{ url }}" cidade="{{ cidade }}">{{ cidade }}
+                                        <li>
+                                            <input type="radio" class="cidade_sugestao" name="url" value="{{ url }}" cidade="{{ cidade }}">{{ cidade }}
+                                        </li>
                                     {% endfor %}
+                                    </ul>
                                 {% endif %}
                                 <div id="input_cidade">
                                     <small>Pelo menos 3 letras</small>
