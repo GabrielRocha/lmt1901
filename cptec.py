@@ -8,8 +8,9 @@ import re
 class CPTECCrawler:
 
     def __init__(self, cidade):
+        self.cidade = cidade
         session = requests.Session()
-        self.html_cptec = session.post("http://www.cptec.inpe.br/cidades/previsao.do",data=dict(parameter="listar2",name=cidade)).text
+        self.html_cptec = session.post("http://www.cptec.inpe.br/cidades/previsao.do",data=dict(parameter="listar2",name=self.cidade)).text
         self.parsed_html = BeautifulSoup(self.html_cptec, "html.parser")
         self.root_content = self.parsed_html.find("div", {"class": "meio_esquerda"})
 
@@ -18,7 +19,7 @@ class CPTECCrawler:
         group = list()
         for div in divs.split():
             text_div = content.find("div", {"class": div})
-            if text_div.find("b"):
+            if text_div and text_div.find("b"):
                 value = re.sub("(\\r|\\n|  )", "", " ".join(text_div.find("b").strings))
                 key = remover_acentos(re.sub("(\\r|\\n|  |\*)", "",
                                              text_div.text.replace(text_div.find("b").text,
@@ -37,10 +38,15 @@ class CPTECCrawler:
     def condicoes_atuais(self):
         try:
             condicao_atual = self.root_content.find("div", {"class":"cond"})
-            dados = self._get_elements(condicao_atual, (2,7))
-            dados += [('CONDICAO', self._get_elements(condicao_atual, (7,8))[0][-1])]
-            iuv_max = self.root_content.find("div", {"class": "induv"})
-            dados += [('IUV MAXIMO', "%s - %s" %(self._get_uv_max(iuv_max), " ".join(iuv_max.strings)))]
+            if not condicao_atual:
+                condicao_atual = self.root_content.find("div", {"class":"conduv"})
+                iuv_max = self.root_content.find("div", {"class": "dados"})
+                dados = [('IUV MAXIMO', "%s - %s" %(self._get_uv_max(iuv_max), " ".join(iuv_max.strings)))]
+            else:
+                dados = self._get_elements(condicao_atual, (2,7))
+                dados += [('CONDICAO', self._get_elements(condicao_atual, (7,8))[0][-1])]
+                iuv_max = self.root_content.find("div", {"class": "induv"})
+                dados += [('IUV MAXIMO', "%s - %s" %(self._get_uv_max(iuv_max), " ".join(iuv_max.strings)))]
             return [dados]
         except:
             raise ValueError("Dados Não encontrados")
