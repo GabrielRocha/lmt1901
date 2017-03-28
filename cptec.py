@@ -72,7 +72,3 @@ class CPTECCrawler:
 
     def get_xls(self):
         return build_xls(self.condicoes_atuais_list()+[[]]+self.previsoes_list())
-
-if __name__ == '__main__':
-    cp = CPTECCrawler("asdf")
-    cp.condicoes_atuais_list()
