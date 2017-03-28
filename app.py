@@ -80,7 +80,7 @@ def cptec():
             cptec = CPTECCrawler(cidade)
         try:
             tmp = cptec.get_xls()
-            file_name = "CPTEC_{}_{}.xls".format(cidade.replace(" ", "_"), date.today().strftime("%d_%m_%Y"))
+            file_name = "CPTEC_{}_{}.xls".format(cidade.upper().replace(" ", "_"), date.today().strftime("%d_%m_%Y"))
             return send_file(tmp.filename, as_attachment=True,
                          attachment_filename=file_name)
         except:
