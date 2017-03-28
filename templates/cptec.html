@@ -32,7 +32,7 @@
                                 {%  if cidades %}
                                     <ul>
                                     {% for cidade, url in cidades %}
-                                        <li>
+                                        <li class="cidades">
                                             <input type="radio" class="cidade_sugestao" name="url" value="{{ url }}" cidade="{{ cidade }}">{{ cidade }}
                                         </li>
                                     {% endfor %}

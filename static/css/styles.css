@@ -65,22 +65,9 @@ h3, h4 {
 	padding: 0; margin: 0;
 }
 
-.glyphicon-xl {
-	font-size: 6em;
+.cidades{
+    text-align: left;
 }
-
-.glyphicon-l {
-	font-size: 3em;
-}
-
-.glyphicon-m {
-	font-size: 1.5em;
-}
-
-.glyphicon-s {
-	font-size: 0.75em;
-}
-
 .form-control {
 	border: 1px solid #eee;
 	box-shadow: none;
