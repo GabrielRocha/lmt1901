@@ -81,8 +81,7 @@ def cptec():
         try:
             tmp = cptec.get_xls()
             file_name = "CPTEC_{}_{}.xls".format(cidade.upper().replace(" ", "_"), date.today().strftime("%d_%m_%Y"))
-            return send_file(tmp.filename, as_attachment=True,
-                         attachment_filename=file_name)
+            return send_file(tmp.filename, as_attachment=True, attachment_filename=file_name)
         except:
             context = cptec.show_cidades_validas()
             return render_template("cptec.html", **context)
@@ -105,11 +104,9 @@ def download_dados_query(query):
     if 'username' and 'password' not in session.keys():
         return redirect(url_for('index'))
     bdmep = BDMEP(session['username'], session['password'])
-    temp = bdmep.get_xls(request.form['estacao'],
-                              request.form['data_inicio'],
-                              request.form['data_fim'],
-                              settings.__getattribute__(query))
-    file_name = "{}_{}_{}_{}.xls".format(ESTACOES.get(request.form['estacao'], "").replace(" ","_"),
+    temp = bdmep.get_xls(request.form['estacao'], request.form['data_inicio'], request.form['data_fim'],
+                         settings.__getattribute__(query))
+    file_name = "{}_{}_{}_{}.xls".format(ESTACOES.get(request.form['estacao'], "").replace(" ", "_"),
                                          request.form['data_inicio'].replace("/", ""),
                                          request.form['data_fim'].replace("/", ""),
                                          query.replace("URL_DADOS_", ""))
@@ -119,4 +116,4 @@ def download_dados_query(query):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)
