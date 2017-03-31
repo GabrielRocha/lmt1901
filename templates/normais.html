@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+    LMT1901 - Normais
+{% endblock %}
+{% include 'includes/nav.html' %}
+{% include 'includes/menu.html' %}
+{% block body %}
+    <div class="col-lg-12 main">
+        <div class="row"></div>
+    </div>
+{% endblock %}
+{% block extrajs %}
+    <script>
+        $(".nav.menu li").removeClass("active");
+        $("li#normais").addClass("active");
+    </script>
+{% endblock %}
