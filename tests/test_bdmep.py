@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class TestBDMEP(TestCase):
-    
+
     def setUp(self):
         self.dados = BDMEP("user", "pass")
 
@@ -23,41 +23,50 @@ class TestBDMEP(TestCase):
 
     def test_get_dados_horario_inexistente(self):
         with pytest.raises(ValueError) as error:
-            self.dados.get_dados("83695","01/01/2017","01/01/2016", settings.URL_DADOS_HORARIOS)
+            self.dados.get_dados("83695", "01/01/2017", "01/01/2016",
+                                 settings.URL_DADOS_HORARIOS)
         assert "Dados Não encontrados" in str(error.value)
 
     def test_get_dados_horario(self):
-        assert self.dados.get_dados("83695","01/01/2016","01/01/2016", settings.URL_DADOS_HORARIOS) == \
+        assert self.dados.get_dados("83695", "01/01/2016", "01/01/2016",
+                                    settings.URL_DADOS_HORARIOS) == \
                open(BASE_DIR+"/dados/horarios.txt").read().split("\n")
 
     def test_get_dados_diarios_inexistente(self):
         with pytest.raises(ValueError) as error:
-            self.dados.get_dados("83695","01/01/2017","01/01/2016", settings.URL_DADOS_DIARIOS)
+            self.dados.get_dados("83695", "01/01/2017", "01/01/2016",
+                                 settings.URL_DADOS_DIARIOS)
         assert "Dados Não encontrados" in str(error.value)
 
     def test_get_dados_diarios(self):
-        assert self.dados.get_dados("83695","01/01/2016","01/01/2016", settings.URL_DADOS_DIARIOS) == \
+        assert self.dados.get_dados("83695", "01/01/2016", "01/01/2016",
+                                    settings.URL_DADOS_DIARIOS) == \
                open(BASE_DIR+"/dados/diarios.txt").read().split("\n")
 
     def test_get_dados_mensais_inexistente(self):
         with pytest.raises(ValueError) as error:
-            self.dados.get_dados("83695","01/01/2016","01/01/2016", settings.URL_DADOS_MENSAIS)
+            self.dados.get_dados("83695", "01/01/2016", "01/01/2016",
+                                 settings.URL_DADOS_MENSAIS)
         assert "Dados Não encontrados" in str(error.value)
 
     def test_get_dados_mensais(self):
-        assert self.dados.get_dados("83695","01/01/2016","01/02/2016", settings.URL_DADOS_MENSAIS) == \
+        assert self.dados.get_dados("83695", "01/01/2016", "01/02/2016",
+                                    settings.URL_DADOS_MENSAIS) == \
                open(BASE_DIR+"/dados/mensais.txt").read().split("\n")
 
     def test_generate_xls_horarios(self):
-        xls = self.dados.get_xls("83695","01/01/2016","01/01/2016", settings.URL_DADOS_HORARIOS)
+        xls = self.dados.get_xls("83695", "01/01/2016", "01/01/2016",
+                                 settings.URL_DADOS_HORARIOS)
         self._compare_xls(xls.filename, BASE_DIR+"/dados/horarios.xls")
 
     def test_generate_xls_diarios(self):
-        xls = self.dados.get_xls("83695","01/01/2016","01/01/2016", settings.URL_DADOS_DIARIOS)
+        xls = self.dados.get_xls("83695", "01/01/2016", "01/01/2016",
+                                 settings.URL_DADOS_DIARIOS)
         self._compare_xls(xls.filename, BASE_DIR+"/dados/diarios.xls")
 
     def test_generate_xls_mensais(self):
-        xls = self.dados.get_xls("83695","01/01/2016","01/02/2016", settings.URL_DADOS_MENSAIS)
+        xls = self.dados.get_xls("83695", "01/01/2016", "01/02/2016",
+                                 settings.URL_DADOS_MENSAIS)
         self._compare_xls(xls.filename, BASE_DIR+"/dados/mensais.xls")
 
     def _compare_xls(self, xls, xls_base):

@@ -18,7 +18,8 @@ class TestCaseApp(TestCase):
     def test_index_without_username_and_password(self):
         response = self.client.post("/", data=dict(username="", password=""))
         self.assertEqual(response.status_code, 200)
-        self.assert_context('error', 'Usuário e Senha são obrigatórios'.decode("utf-8"))
+        self.assert_context('error', 'Usuário e Senha são obrigatórios'
+                            .decode("utf-8"))
 
     def test_template_index(self):
         self.client.get("/")
@@ -60,9 +61,11 @@ class TestCaseApp(TestCase):
         data = {"estacao": "83695",
                 "data_inicio": "01/01/2016",
                 "data_fim": "01/02/2016"}
-        response = self.client.post("/download/mensal", data=data, follow_redirects=True)
+        response = self.client.post("/download/mensal", data=data,
+                                    follow_redirects=True)
+        file_name = 'ITAPERUNA_01012016_01022016_MENSAIS.xls'
         assert response.content_type == 'application/vnd.ms-excel'
-        assert response.headers['Content-Disposition'] == 'attachment; filename=ITAPERUNA_01012016_01022016_MENSAIS.xls'
+        assert file_name in response.headers['Content-Disposition']
 
     def test_download_mensal_without_login(self):
         data = {"estacao": "83695",
@@ -80,9 +83,11 @@ class TestCaseApp(TestCase):
         data = {"estacao": "83695",
                 "data_inicio": "01/01/2016",
                 "data_fim": "01/02/2016"}
-        response = self.client.post("/download/diarios", data=data, follow_redirects=True)
+        response = self.client.post("/download/diarios", data=data,
+                                    follow_redirects=True)
+        file_name = 'ITAPERUNA_01012016_01022016_DIARIOS.xls'
         assert response.content_type == 'application/vnd.ms-excel'
-        assert response.headers['Content-Disposition'] == 'attachment; filename=ITAPERUNA_01012016_01022016_DIARIOS.xls'
+        assert file_name in response.headers['Content-Disposition']
 
     def test_download_diarios_without_login(self):
         data = {"estacao": "83695",
@@ -100,9 +105,11 @@ class TestCaseApp(TestCase):
         data = {"estacao": "83695",
                 "data_inicio": "01/01/2016",
                 "data_fim": "01/02/2016"}
-        response = self.client.post("/download/horarios", data=data, follow_redirects=True)
+        response = self.client.post("/download/horarios", data=data,
+                                    follow_redirects=True)
+        file_name = 'ITAPERUNA_01012016_01022016_HORARIOS.xls'
         assert response.content_type == 'application/vnd.ms-excel'
-        assert response.headers['Content-Disposition'] == 'attachment; filename=ITAPERUNA_01012016_01022016_HORARIOS.xls'
+        assert file_name in response.headers['Content-Disposition']
 
     def test_download_horarios_without_login(self):
         data = {"estacao": "83695",

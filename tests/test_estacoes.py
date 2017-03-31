@@ -1,11 +1,12 @@
 from estacoes import ESTACOES
 
 
-class TestCaseEstacoes():
-    def test_total_ESTACOES(self):
+class TestCaseEstacoes:
+
+    def test_total_estacoes(self):
         assert len(ESTACOES.keys()) == 6
 
-    def test_type_ESTACOES(self):
+    def test_type_estacoes(self):
         assert type(ESTACOES) is dict
 
     def test_keys(self):
