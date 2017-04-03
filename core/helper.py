@@ -8,9 +8,9 @@ import re
 def remover_acentos(txt, codif='utf-8'):
     return normalize('NFKD', txt.decode(codif)).encode('ASCII','ignore')
 
+
 def normalize_string(string):
     return re.sub("(\\r|\\n|  |\*)", "", string)
-
 
 
 def build_xls(dados):
@@ -26,5 +26,3 @@ def build_xls(dados):
             worksheet.write(row_number, column_number, column_value)
     workbook.close()
     return workbook
-
-
