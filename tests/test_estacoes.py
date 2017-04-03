@@ -1,4 +1,4 @@
-from estacoes import ESTACOES
+from core.estacoes import ESTACOES
 
 
 class TestCaseEstacoes:
