@@ -1,22 +1,23 @@
 #! -*- coding: UTF-8 -*-
-import flask
-from datetime import date
-from estacoes import ESTACOES
-from bdmep import BDMEP
+from core.validates import login_required, already_loged_redirect_bdmeptoxls
+from core.app_helper import dados_mensais, dados_diarios, dados_horarios
+from core.helper import remover_acentos
+from core.estacoes import ESTACOES
 from cptec import CPTECCrawler
-from helper import remover_acentos
-import settings
+from datetime import date
+import json
 import os
-
+import flask
+import xlrd
+import settings
 
 app = flask.Flask(__name__, static_url_path="")
 app.secret_key = settings.SECRET_KEY
 
 
 @app.route("/", methods=['POST', 'GET'])
+@already_loged_redirect_bdmeptoxls
 def index():
-    pass_user_in_session = 'username' and 'password' in flask.session
-    get_validate = flask.request.method == "GET" and pass_user_in_session
     context = dict()
     if flask.request.method == "POST":
         user = flask.request.form['username']
@@ -27,42 +28,36 @@ def index():
         else:
             flask.session['username'] = flask.request.form['username']
             flask.session['password'] = flask.request.form['password']
-            return flask.redirect(flask.url_for("bdmeptoxls"))
-    if get_validate:
-        return flask.redirect("bdmeptoxls")
-    flask.session.clear()
+            return flask.redirect("/bdmeptoxls")
     return flask.render_template("index.html", **context)
 
 
 @app.route("/logout")
 def logout():
     flask.session.clear()
-    return flask.redirect(flask.url_for('index'))
+    return flask.redirect("/")
 
 
 @app.route("/bdmeptoxls")
+@login_required
 def bdmeptoxls():
-    pass_user_in_session = 'username' and 'password' in flask.session
-    get_validate = flask.request.method == "GET" and pass_user_in_session
-    if get_validate:
-        return flask.redirect(flask.url_for('index'))
     context = dict(estacoes=sorted(ESTACOES.items()))
     return flask.render_template("bdmeptoxls.html", **context)
 
 
 @app.route("/download/horarios", methods=['POST'])
 def download_horarios():
-    return download_dados_query("URL_DADOS_HORARIOS")
+    return dados_horarios(flask.request)
 
 
 @app.route("/download/diarios", methods=['POST'])
 def download_diarios():
-    return download_dados_query("URL_DADOS_DIARIOS")
+    return dados_diarios(flask.request)
 
 
 @app.route("/download/mensal", methods=['POST'])
 def download_mensal():
-    return download_dados_query("URL_DADOS_MENSAIS")
+    return dados_mensais(flask.request)
 
 
 @app.route("/recomendacao", methods=['GET'])
@@ -96,9 +91,24 @@ def cptec():
     return flask.render_template("cptec.html")
 
 
+@app.route("/normais/json")
+def normais_json():
+    xls_file = "dados/Precipitacao-Acumulada_NCB_1961-1990.xls"
+    xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
+    normais = list()
+    for number_row in range(1, xls.nrows):
+        value_xls = xls.row_values(number_row)
+        normais.append(value_xls)
+    return json.dumps(dict(data=normais))
+
+
 @app.route("/normais")
 def normais():
-    return flask.render_template("normais.html")
+    xls_file = "dados/Precipitacao-Acumulada_NCB_1961-1990.xls"
+    xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
+    keys = [key for key in xls.row_values(0)]
+    context = dict(columns=keys)
+    return flask.render_template("normais.html", **context)
 
 
 @app.errorhandler(400)
@@ -111,25 +121,6 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_error(e):
     return flask.render_template('status_code/500.html'), 500
-
-
-def download_dados_query(query):
-    if 'username' and 'password' not in flask.session.keys():
-        return flask.redirect(flask.url_for('index'))
-    bdmep = BDMEP(flask.session['username'], flask.session['password'])
-    temp = bdmep.get_xls(flask.request.form['estacao'],
-                         flask.request.form['data_inicio'],
-                         flask.request.form['data_fim'],
-                         settings.__getattribute__(query))
-    estacao = ESTACOES.get(flask.request.form['estacao'], "").replace(" ", "_")
-    data_inicio = flask.request.form['data_inicio'].replace("/", "")
-    data_fim = flask.request.form['data_fim'].replace("/", "")
-    file_name = "{}_{}_{}_{}.xls".format(estacao,
-                                         data_inicio,
-                                         data_fim,
-                                         query.replace("URL_DADOS_", ""))
-    return flask.send_file(temp.filename, as_attachment=True,
-                           attachment_filename=file_name)
 
 
 if __name__ == "__main__":
