@@ -1,7 +1,7 @@
 #! -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
+from core.helper import build_xls
 from settings import LOGIN, URL_INDEX, ANCORA
-from helper import build_xls
 import requests
 
 
