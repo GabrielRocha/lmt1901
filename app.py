@@ -91,7 +91,7 @@ def cptec():
     return flask.render_template("cptec.html")
 
 
-@app.route("/normais/json")
+@app.route("/normais/precipitacao/json")
 def normais_json():
     xls_file = "dados/Precipitacao-Acumulada_NCB_1961-1990.xls"
     xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
