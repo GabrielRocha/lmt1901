@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}
+    LMT1901 - Normais
+{% endblock %}
+{% block body %}
+     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                <li>Normais Climatológicas do Brasil</li>
+                <li class="active">1961 - 1990</li>
+            </ol>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <a href="/normais/temperatura">
+                    <div class="col-md-6 col-sm-6 col-xs-12" id="temperatura">
+                        <div class="dashboard-div-wrapper bk-clr-four">
+                            <i class="fa fa-thermometer-half dashboard-div-icon"></i>
+                            <div class="form-group">
+                                <label class="font-noraml">Temperatura</label>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="/normais/precipitacao">
+                    <div class="col-md-6 col-sm-6 col-xs-12" id="precipitacao">
+                        <div class="dashboard-div-wrapper bk-clr-five">
+                            <i class="fa fa-tint dashboard-div-icon"></i>
+                            <div class="form-group">
+                                <label class="font-noraml">Precipitação</label>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+     </div>
+{% endblock %}
+{% block extrajs %}
+    <script>
+        $(document).ready(function(){
+            $(".nav.menu li").removeClass("active");
+            $("li#normais").addClass("active");
+        });
+    </script>
+{% endblock %}

@@ -840,6 +840,12 @@ h1.page-header {
 .bk-clr-three{
     background-color: #696969;
 }
+.bk-clr-four{
+    background-color: teal;
+}
+.bk-clr-five{
+    background-color: steelblue;
+}
 
 .dashboard-div-icon {
     border: 2px solid #fff;
@@ -854,7 +860,6 @@ h1.page-header {
 .submit{
     cursor: pointer;
 }
-
 .btn-lmt{
 	background-color: #2e8b57;
 }

@@ -1,4 +1,8 @@
+import json
+
 import flask
+import xlrd
+
 import settings
 from bdmep import BDMEP
 from core.estacoes import ESTACOES
@@ -31,3 +35,12 @@ def partial(funcao, query):
 dados_mensais = partial(download_dados_query, "URL_DADOS_MENSAIS")
 dados_diarios = partial(download_dados_query, "URL_DADOS_DIARIOS")
 dados_horarios = partial(download_dados_query, "URL_DADOS_HORARIOS")
+
+
+def xls_to_json(xls_file):
+    xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
+    normais = list()
+    for number_row in range(1, xls.nrows):
+        value_xls = xls.row_values(number_row)
+        normais.append(value_xls)
+    return json.dumps(dict(data=normais))

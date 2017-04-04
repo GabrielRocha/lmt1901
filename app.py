@@ -1,6 +1,6 @@
 #! -*- coding: UTF-8 -*-
 from core.validates import login_required, already_loged_redirect_bdmeptoxls
-from core.app_helper import dados_mensais, dados_diarios, dados_horarios
+from core.app_helper import dados_mensais, dados_diarios, dados_horarios, xls_to_json
 from core.helper import remover_acentos
 from core.estacoes import ESTACOES
 from cptec import CPTECCrawler
@@ -91,24 +91,37 @@ def cptec():
     return flask.render_template("cptec.html")
 
 
-@app.route("/normais/precipitacao/json")
-def normais_json():
-    xls_file = "dados/Precipitacao-Acumulada_NCB_1961-1990.xls"
-    xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
-    normais = list()
-    for number_row in range(1, xls.nrows):
-        value_xls = xls.row_values(number_row)
-        normais.append(value_xls)
-    return json.dumps(dict(data=normais))
-
-
 @app.route("/normais")
 def normais():
+    return flask.render_template("normais/selecao.html")
+
+
+@app.route("/normais/precipitacao")
+def normais_precipitacao():
     xls_file = "dados/Precipitacao-Acumulada_NCB_1961-1990.xls"
     xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
     keys = [key for key in xls.row_values(0)]
-    context = dict(columns=keys)
-    return flask.render_template("normais.html", **context)
+    context = dict(columns=keys, item="precipitacao")
+    return flask.render_template("normais/grid_normais.html", **context)
+
+
+@app.route("/normais/temperatura")
+def normais_temperatura():
+    xls_file = "dados/Temperatura-Media-Compensada_NCB_1961-1990.xls"
+    xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
+    keys = [key for key in xls.row_values(0)]
+    context = dict(columns=keys, item="temperatura")
+    return flask.render_template("normais/grid_normais.html", **context)
+
+
+@app.route("/normais/precipitacao/json")
+def normais_precipitacao_json():
+    return xls_to_json("dados/Precipitacao-Acumulada_NCB_1961-1990.xls")
+
+
+@app.route("/normais/temperatura/json")
+def normais_temperatura_json():
+    return xls_to_json("dados/Temperatura-Media-Compensada_NCB_1961-1990.xls")
 
 
 @app.errorhandler(400)
@@ -125,4 +138,4 @@ def page_error(e):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=True)
