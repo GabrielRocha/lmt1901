@@ -41,6 +41,7 @@ def xls_to_json(xls_file):
     xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
     normais = list()
     for number_row in range(1, xls.nrows):
-        value_xls = xls.row_values(number_row)
+        value_xls = [number_row]
+        value_xls += xls.row_values(number_row)
         normais.append(value_xls)
     return json.dumps(dict(data=normais))
