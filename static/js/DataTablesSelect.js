@@ -1,5 +1,5 @@
 //
-// Updates "Select all" control in a data table
+// Updates "Select all" control in a data table js
 //
 function updateDataTableSelectAllCtrl(table){
    var $table             = table.table().node();
