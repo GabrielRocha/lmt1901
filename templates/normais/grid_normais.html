@@ -79,8 +79,10 @@
                         data : $rows[key].slice(2)
                     })
                 }
-                window.myLine = null;
-                var chart1 = document.getElementById("line-chart").getContext("2d");
+
+                var canvas = document.getElementById("line-chart");
+                var chart1 = canvas.getContext("2d");
+                chart1.clearRect(0, 0, canvas.width, canvas.height);
                 window.myLine = new Chart(chart1).Line(lineChartData, {
                     responsive: true,
                     maintainAspectRatio: true
