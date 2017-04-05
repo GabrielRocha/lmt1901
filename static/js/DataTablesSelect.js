@@ -129,4 +129,4 @@ function getRandomInt() {
 
 function randomColorGenerator() {
     return 'rgba(' + getRandomInt().toString()+ "," + getRandomInt().toString() + "," + getRandomInt().toString();
-};
+}
