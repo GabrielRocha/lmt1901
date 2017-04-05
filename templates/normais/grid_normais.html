@@ -39,7 +39,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div class="canvas-wrapper">
+                <div class="canvas-wrapper" id="graph">
                     <canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
                     <div id="legend"></div>
                 </div>
@@ -80,12 +80,12 @@
                     })
                 }
 
-                var canvas = document.getElementById("line-chart");
-                var chart1 = canvas.getContext("2d");
-                chart1.clearRect(0, 0, canvas.width, canvas.height);
+                renew_graph();
+                var chart1 = document.getElementById("line-chart").getContext("2d");
+
                 window.myLine = new Chart(chart1).Line(lineChartData, {
                     responsive: true,
-                    maintainAspectRatio: true
+                    animation : false
                 });
                 $("#legend").children().remove();
                 var legendHolder = document.createElement('div');
@@ -93,5 +93,13 @@
                 document.getElementById('legend').appendChild(legendHolder.firstChild);
             });
         });
+        function renew_graph(){
+            $("#line-chart").remove();
+            var iDiv = document.createElement('canvas');
+            iDiv.id = "line-chart";
+            iDiv.height="200";
+            iDiv.width="600";
+            $("#legend").before(iDiv);
+        }
     </script>
 {% endblock %}
