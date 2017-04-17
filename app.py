@@ -46,17 +46,17 @@ def bdmeptoxls():
 
 @app.route("/download/horarios", methods=['POST'])
 def download_horarios():
-    return helper.dados_horarios(flask.request)
+    return helper.dados_horarios(flask.request.form)
 
 
 @app.route("/download/diarios", methods=['POST'])
 def download_diarios():
-    return helper.dados_diarios(flask.request)
+    return helper.dados_diarios(flask.request.form)
 
 
 @app.route("/download/mensal", methods=['POST'])
 def download_mensal():
-    return helper.dados_mensais(flask.request)
+    return helper.dados_mensais(flask.request.form)
 
 
 @app.route("/recomendacao", methods=['GET'])

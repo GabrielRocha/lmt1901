@@ -1,40 +1,34 @@
-import json
-
-import flask
-import xlrd
-
-import settings
 from bdmep import BDMEP
 from core.estacoes import ESTACOES
 from core.validates import login_required
+from functools import partial
+import json
+import flask
+import xlrd
+import settings
 
 
 @login_required
-def download_dados_query(query, request):
+def download_dados_query(query, period ,form):
     bdmep = BDMEP(flask.session['username'], flask.session['password'])
-    temp = bdmep.get_xls(request.form['estacao'],
-                         request.form['data_inicio'],
-                         request.form['data_fim'],
-                         settings.__getattribute__(query))
-    estacao = ESTACOES.get(request.form['estacao'], "").replace(" ", "_")
-    data_inicio = request.form['data_inicio'].replace("/", "")
-    data_fim = request.form['data_fim'].replace("/", "")
+    temp = bdmep.get_xls(form['estacao'],
+                         form['data_inicio'],
+                         form['data_fim'],
+                         query)
+    estacao = ESTACOES.get(form['estacao'], "").replace(" ", "_")
+    data_inicio = form['data_inicio'].replace("/", "")
+    data_fim = form['data_fim'].replace("/", "")
     file_name = "{}_{}_{}_{}.xls".format(estacao,
                                          data_inicio,
                                          data_fim,
-                                         query.replace("URL_DADOS_", ""))
+                                         period)
     return flask.send_file(temp.filename, as_attachment=True,
                            attachment_filename=file_name)
 
 
-def partial(funcao, query):
-    def aux_func(request):
-        return funcao(query, request)
-    return aux_func
-
-dados_mensais = partial(download_dados_query, "URL_DADOS_MENSAIS")
-dados_diarios = partial(download_dados_query, "URL_DADOS_DIARIOS")
-dados_horarios = partial(download_dados_query, "URL_DADOS_HORARIOS")
+dados_mensais = partial(download_dados_query, settings.URL_DADOS_MENSAIS, "MENSAIS")
+dados_diarios = partial(download_dados_query, settings.URL_DADOS_DIARIOS, "DIARIOS")
+dados_horarios = partial(download_dados_query, settings.URL_DADOS_HORARIOS, "HORARIOS")
 
 
 def xls_to_json(xls_file):
