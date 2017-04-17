@@ -1,11 +1,10 @@
 #! -*- coding: UTF-8 -*-
-from itertools import izip_longest
 from bdmep import BDMEP, LOGIN
 from unittest import TestCase
+from xls import compare_xls
 import settings
 import pytest
 import os
-import xlrd
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -57,24 +56,14 @@ class TestCaseBDMEP(TestCase):
     def test_generate_xls_horarios(self):
         xls = self.dados.get_xls("83695", "01/01/2016", "01/01/2016",
                                  settings.URL_DADOS_HORARIOS)
-        self._compare_xls(xls.filename, BASE_DIR+"/dados/horarios.xls")
+        compare_xls(xls.filename, BASE_DIR+"/dados/horarios.xls")
 
     def test_generate_xls_diarios(self):
         xls = self.dados.get_xls("83695", "01/01/2016", "01/01/2016",
                                  settings.URL_DADOS_DIARIOS)
-        self._compare_xls(xls.filename, BASE_DIR+"/dados/diarios.xls")
+        compare_xls(xls.filename, BASE_DIR+"/dados/diarios.xls")
 
     def test_generate_xls_mensais(self):
         xls = self.dados.get_xls("83695", "01/01/2016", "01/02/2016",
                                  settings.URL_DADOS_MENSAIS)
-        self._compare_xls(xls.filename, BASE_DIR+"/dados/mensais.xls")
-
-    def _compare_xls(self, xls, xls_base):
-        sheet1 = xlrd.open_workbook(xls).sheet_by_index(0)
-        sheet2 = xlrd.open_workbook(xls_base).sheet_by_index(0)
-        assert sheet2.nrows == sheet1.nrows
-        for rownum in range(max(sheet1.nrows, sheet2.nrows)):
-            row_rb1 = sheet1.row_values(rownum)
-            row_rb2 = sheet2.row_values(rownum)
-            for colnum, (c1, c2) in enumerate(izip_longest(row_rb1, row_rb2)):
-                assert c1 == c2
+        compare_xls(xls.filename, BASE_DIR+"/dados/mensais.xls")
