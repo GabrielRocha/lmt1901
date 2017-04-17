@@ -1,11 +1,10 @@
 #! -*- coding: UTF-8 -*-
 from core.validates import login_required, already_loged_redirect_bdmeptoxls
-from core.app_helper import dados_mensais, dados_diarios, dados_horarios, xls_to_json
+import core.app_helper as helper
 from core.helper import remover_acentos
 from core.estacoes import ESTACOES
 from cptec import CPTECCrawler
 from datetime import date
-import json
 import os
 import flask
 import xlrd
@@ -47,17 +46,17 @@ def bdmeptoxls():
 
 @app.route("/download/horarios", methods=['POST'])
 def download_horarios():
-    return dados_horarios(flask.request)
+    return helper.dados_horarios(flask.request)
 
 
 @app.route("/download/diarios", methods=['POST'])
 def download_diarios():
-    return dados_diarios(flask.request)
+    return helper.dados_diarios(flask.request)
 
 
 @app.route("/download/mensal", methods=['POST'])
 def download_mensal():
-    return dados_mensais(flask.request)
+    return helper.dados_mensais(flask.request)
 
 
 @app.route("/recomendacao", methods=['GET'])
@@ -116,12 +115,12 @@ def normais_temperatura():
 
 @app.route("/normais/precipitacao/json")
 def normais_precipitacao_json():
-    return xls_to_json("dados/Precipitacao-Acumulada_NCB_1961-1990.xls")
+    return helper.xls_to_json("dados/Precipitacao-Acumulada_NCB_1961-1990.xls")
 
 
 @app.route("/normais/temperatura/json")
 def normais_temperatura_json():
-    return xls_to_json("dados/Temperatura-Media-Compensada_NCB_1961-1990.xls")
+    return helper.xls_to_json("dados/Temperatura-Media-Compensada_NCB_1961-1990.xls")
 
 
 @app.errorhandler(400)

@@ -1,10 +1,8 @@
 #! -*- coding: UTF-8 -*-
-import re
-
-import requests
 from bs4 import BeautifulSoup
-
 from core.helper import build_xls, remover_acentos, normalize_string
+import requests
+import re
 
 
 class CPTECCrawler:

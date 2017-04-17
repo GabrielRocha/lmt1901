@@ -11,7 +11,7 @@ import xlrd
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-class TestBDMEP(TestCase):
+class TestCaseBDMEP(TestCase):
 
     def setUp(self):
         self.dados = BDMEP("user", "pass")
