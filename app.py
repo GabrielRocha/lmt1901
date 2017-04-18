@@ -4,7 +4,6 @@ from flask_cacheify import init_cacheify
 import core.app_helper as helper
 from core.helper import remover_acentos
 from core.estacoes import ESTACOES
-# from cptec import CPTECCrawler
 from datetime import date
 import os
 import flask
