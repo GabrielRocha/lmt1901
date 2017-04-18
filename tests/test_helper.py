@@ -1,6 +1,6 @@
 #! -*- coding: UTF-8 -*-
 from unittest import TestCase, main
-from xls import compare_xls
+from .xls import compare_xls
 from core import helper
 import xlrd
 import os

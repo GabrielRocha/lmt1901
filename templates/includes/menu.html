@@ -1,35 +1,37 @@
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-    <ul class="nav menu">
-        <li class="active">
-            <a href="/">
-                <i class="fa fa-tachometer" aria-hidden="true"></i> <span>BDMEP</span><small>to</small>XLS
-            </a>
-        </li>
-        <li id="celsius_to_fahrenheit">
-            <a href="/celsius_to_fahrenheit">
-                <i class="fa fa-thermometer-full" aria-hidden="true"></i> Cº To Fº
-            </a>
-        </li>
-        <li id="cptec">
-            <a href="/cptec">
-                <i class="fa fa-database" aria-hidden="true"></i> CPTEC
-            </a>
-        </li>
-        <li id="normais">
-            <a href="/normais">
-                <i class="fa fa-calendar" aria-hidden="true"></i> Normais Climatológicas
-            </a>
-        </li>
-        <li id="recomendacao">
-            <a href="/recomendacao">
-                <i class="fa fa-star" aria-hidden="true"></i>  Recomendações
-            </a>
-        </li>
-        <li role="presentation" class="divider"></li>
-    </ul>
-    <div class="attribution">
-        <a href="mailto:gabriel.rocha.gbr@gmail.com" style="color: #333;">Developed by Gabriel Rocha</a>
-        <a href="mailto:gabriel.rocha.gbr@gmail.com" style="color: #333;">Contato: gabriel.rocha.gbr@gmail.com</a>
-        Template by <a href="http://www.medialoot.com/item/lumino-admin-bootstrap-template/">Medialoot</a><br/>
+{% cache 300 %}
+    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <ul class="nav menu">
+            <li class="active">
+                <a href="/">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i> <span>BDMEP</span><small>to</small>XLS
+                </a>
+            </li>
+            <li id="celsius_to_fahrenheit">
+                <a href="/celsius_to_fahrenheit">
+                    <i class="fa fa-thermometer-full" aria-hidden="true"></i> Cº To Fº
+                </a>
+            </li>
+            <li id="cptec">
+                <a href="/cptec">
+                    <i class="fa fa-database" aria-hidden="true"></i> CPTEC
+                </a>
+            </li>
+            <li id="normais">
+                <a href="/normais">
+                    <i class="fa fa-calendar" aria-hidden="true"></i> Normais Climatológicas
+                </a>
+            </li>
+            <li id="recomendacao">
+                <a href="/recomendacao">
+                    <i class="fa fa-star" aria-hidden="true"></i>  Recomendações
+                </a>
+            </li>
+            <li role="presentation" class="divider"></li>
+        </ul>
+        <div class="attribution">
+            <a href="mailto:gabriel.rocha.gbr@gmail.com" style="color: #333;">Developed by Gabriel Rocha</a>
+            <a href="mailto:gabriel.rocha.gbr@gmail.com" style="color: #333;">Contato: gabriel.rocha.gbr@gmail.com</a>
+            Template by <a href="http://www.medialoot.com/item/lumino-admin-bootstrap-template/">Medialoot</a><br/>
+        </div>
     </div>
-</div>
+{% endcache %}

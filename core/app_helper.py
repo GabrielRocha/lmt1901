@@ -6,6 +6,8 @@ import json
 import flask
 import xlrd
 import settings
+from cptec import CPTECCrawler
+from flask import current_app
 
 
 @login_required
@@ -39,3 +41,15 @@ def xls_to_json(xls_file):
         value_xls += xls.row_values(number_row)
         normais.append(value_xls)
     return json.dumps(dict(data=normais))
+
+
+def get_cptec(cidade, url):
+    cached = current_app.cache.get(cidade)
+    if cached:
+        return cached
+    if url:
+        cptec = CPTECCrawler(url=url)
+    else:
+        cptec = CPTECCrawler(cidade=cidade)
+    current_app.cache.set(cidade, cptec, timeout=300)
+    return cptec

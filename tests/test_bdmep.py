@@ -1,7 +1,7 @@
 #! -*- coding: UTF-8 -*-
 from bdmep import BDMEP, LOGIN
 from unittest import TestCase
-from xls import compare_xls
+from .xls import compare_xls
 import settings
 import pytest
 import os

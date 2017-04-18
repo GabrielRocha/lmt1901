@@ -1,9 +1,10 @@
 #! -*- coding: UTF-8 -*-
 from core.validates import login_required, already_loged_redirect_bdmeptoxls
+from flask_cacheify import init_cacheify
 import core.app_helper as helper
 from core.helper import remover_acentos
 from core.estacoes import ESTACOES
-from cptec import CPTECCrawler
+# from cptec import CPTECCrawler
 from datetime import date
 import os
 import flask
@@ -12,6 +13,7 @@ import settings
 
 app = flask.Flask(__name__, static_url_path="")
 app.secret_key = settings.SECRET_KEY
+app.cache = init_cacheify(app)
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -73,10 +75,7 @@ def celsius_to_fahrenheit():
 def cptec():
     if flask.request.method == "POST":
         cidade = remover_acentos(flask.request.form['cidade'].encode("utf-8"))
-        if flask.request.form.get('url', None):
-            cptec = CPTECCrawler(url=flask.request.form.get('url'))
-        else:
-            cptec = CPTECCrawler(cidade)
+        cptec = helper.get_cptec(cidade, flask.request.form.get('url', None))
         try:
             tmp = cptec.get_xls()
             cidade = cidade.upper().replace(" ", "_")
@@ -96,6 +95,7 @@ def normais():
 
 
 @app.route("/normais/precipitacao")
+@app.cache.cached(timeout=300)
 def normais_precipitacao():
     xls_file = "dados/Precipitacao-Acumulada_NCB_1961-1990.xls"
     xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
@@ -105,6 +105,7 @@ def normais_precipitacao():
 
 
 @app.route("/normais/temperatura")
+@app.cache.cached(timeout=300)
 def normais_temperatura():
     xls_file = "dados/Temperatura-Media-Compensada_NCB_1961-1990.xls"
     xls = xlrd.open_workbook(xls_file).sheet_by_index(0)
@@ -114,11 +115,13 @@ def normais_temperatura():
 
 
 @app.route("/normais/precipitacao/json")
+@app.cache.cached(timeout=300)
 def normais_precipitacao_json():
     return helper.xls_to_json("dados/Precipitacao-Acumulada_NCB_1961-1990.xls")
 
 
 @app.route("/normais/temperatura/json")
+@app.cache.cached(timeout=300)
 def normais_temperatura_json():
     return helper.xls_to_json("dados/Temperatura-Media-Compensada_NCB_1961-1990.xls")
 
